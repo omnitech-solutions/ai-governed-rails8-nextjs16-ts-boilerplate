@@ -3,18 +3,18 @@
  * Renders a table for any resource using Ant Design Table
  */
 
-import { Table, Button, Space, Popconfirm, Skeleton } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Popconfirm, Skeleton } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-export interface ResourceTableProps<T> extends Omit<TableProps<T>, 'columns'> {
+export interface ResourceTableProps<T> extends Omit<TableProps<T>, "columns"> {
   columns: ColumnsType<T>;
   onEdit?: (record: T) => void;
   onDelete?: (record: T) => void;
   isLoading?: boolean;
 }
 
-export function ResourceTable<T extends Record<string, any>>({
+export function ResourceTable<T extends Record<string, unknown>>({
   columns,
   onEdit,
   onDelete,
@@ -26,8 +26,8 @@ export function ResourceTable<T extends Record<string, any>>({
 
   if (onEdit || onDelete) {
     actionColumns.push({
-      title: 'Actions',
-      key: 'actions',
+      title: "Actions",
+      key: "actions",
       width: 120,
       render: (_, record) => (
         <Space size="small">
@@ -48,12 +48,7 @@ export function ResourceTable<T extends Record<string, any>>({
               okText="Yes"
               cancelText="No"
             >
-              <Button
-                type="link"
-                danger
-                icon={<DeleteOutlined />}
-                size="small"
-              >
+              <Button type="link" danger icon={<DeleteOutlined />} size="small">
                 Delete
               </Button>
             </Popconfirm>
@@ -69,5 +64,7 @@ export function ResourceTable<T extends Record<string, any>>({
     return <Skeleton active />;
   }
 
-  return <Table<T> columns={allColumns} className="resource-table" {...tableProps} />;
+  return (
+    <Table<T> columns={allColumns} className="resource-table" {...tableProps} />
+  );
 }

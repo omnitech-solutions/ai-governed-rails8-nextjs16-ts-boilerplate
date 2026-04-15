@@ -81,7 +81,7 @@ class ApplicationOrchestrator
   def format_errors(record)
     record.errors.map do |error|
       {
-        title: 'Validation Error',
+        title: "Validation Error",
         detail: error.message,
         status: 422,
         source: {

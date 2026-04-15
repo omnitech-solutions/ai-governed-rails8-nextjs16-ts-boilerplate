@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class ApplicationResource < Graphiti::Resource
-  self.endpoint_namespace = '/api/v1'
+  self.endpoint_namespace = "/api/v1"
   self.adapter = Graphiti::Adapters::ActiveRecord
 
   # CRITICAL: Override default resource type naming
   def self.type
     # Remove '_resources' suffix for cleaner URLs
-    name.demodulize.gsub('Resource', '').underscore.pluralize
+    name.demodulize.gsub("Resource", "").underscore.pluralize
   end
 
   # Default pagination

@@ -86,18 +86,18 @@ module Api
         # Use writable attributes if available, fallback to all attributes for safety
         attribute_names = if resource_class.respond_to?(:writable_attributes)
                             resource_class.writable_attributes.keys
-                          else
+        else
                             resource_class.new.attributes.map { |attr| attr[0].to_sym }
-                          end
+        end
 
         # Extract attributes from JSON:API format or plain params
         params_data = if params[:data] && params[:data][:attributes]
                         params[:data][:attributes]
-                      elsif params[:data]
+        elsif params[:data]
                         params[:data]
-                      else
+        else
                         params
-                      end
+        end
 
         # Ensure params_data is ActionController::Parameters and permit attributes
         unless params_data.is_a?(ActionController::Parameters)
@@ -114,7 +114,7 @@ module Api
       def format_validation_errors(record)
         record.errors.map do |error|
           {
-            title: 'Validation Error',
+            title: "Validation Error",
             detail: error.message,
             status: 422,
             source: {

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { unstableSetRender } from 'antd';
-import { createRoot } from 'react-dom/client';
+import { useEffect } from "react";
+import { unstableSetRender } from "antd";
+import { createRoot } from "react-dom/client";
 
 let isConfigured = false;
 

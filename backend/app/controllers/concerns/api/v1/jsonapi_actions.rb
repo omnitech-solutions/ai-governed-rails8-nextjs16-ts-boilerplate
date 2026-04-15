@@ -17,9 +17,9 @@ module Api
         def jsonapi_actions(*actions)
           self.jsonapi_actions_enabled = if actions.include?(:all)
                                            %i[index show create update destroy]
-                                         else
+          else
                                            actions
-                                         end
+          end
         end
       end
     end

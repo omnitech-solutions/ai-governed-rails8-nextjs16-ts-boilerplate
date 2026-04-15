@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import type { PropsWithChildren } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Layout, Space, Tag, Typography } from 'antd';
-import { ProLayout } from '@ant-design/pro-components';
-import { appNavigation } from '@/config/navigation';
-import { Logo, LogoMark } from '@/components/Logo';
-import { useState } from 'react';
+import type { PropsWithChildren } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Layout, Space, Tag, Typography } from "antd";
+import { ProLayout } from "@ant-design/pro-components";
+import { appNavigation } from "@/config/navigation";
+import { Logo, LogoMark } from "@/components/Logo";
 
-const { Paragraph, Text, Title } = Typography;
+const { Text, Title } = Typography;
 
 function getActiveItem(pathname: string) {
-  return appNavigation.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+  return appNavigation.find(
+    (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+  );
 }
 
 export function AppShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const activeItem = getActiveItem(pathname);
-  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="app-shell">
@@ -32,28 +32,27 @@ export function AppShell({ children }: PropsWithChildren) {
         location={{ pathname }}
         siderWidth={288}
         defaultCollapsed={false}
-        onCollapse={setCollapsed}
         token={{
-          bgLayout: 'transparent',
-          colorBgAppListIconHover: 'rgba(255,255,255,0.08)',
+          bgLayout: "transparent",
+          colorBgAppListIconHover: "rgba(255,255,255,0.08)",
           header: {
-            colorBgHeader: 'rgba(6, 13, 24, 0.88)',
-            colorHeaderTitle: '#f5f7ff',
-            colorTextMenu: '#9db0d0',
-            colorTextMenuActive: '#ffffff',
-            colorTextMenuSelected: '#ffffff',
+            colorBgHeader: "rgba(6, 13, 24, 0.88)",
+            colorHeaderTitle: "#f5f7ff",
+            colorTextMenu: "#9db0d0",
+            colorTextMenuActive: "#ffffff",
+            colorTextMenuSelected: "#ffffff",
           },
           pageContainer: {
-            colorBgPageContainer: 'transparent',
+            colorBgPageContainer: "transparent",
           },
           sider: {
-            colorBgMenuItemHover: 'rgba(255,255,255,0.08)',
-            colorBgMenuItemSelected: 'rgba(80, 139, 255, 0.18)',
-            colorMenuBackground: 'rgba(8, 16, 30, 0.92)',
-            colorTextMenu: '#8fa3c4',
-            colorTextMenuActive: '#ffffff',
-            colorTextMenuSelected: '#ffffff',
-            colorTextSubMenuSelected: '#ffffff',
+            colorBgMenuItemHover: "rgba(255,255,255,0.08)",
+            colorBgMenuItemSelected: "rgba(80, 139, 255, 0.18)",
+            colorMenuBackground: "rgba(8, 16, 30, 0.92)",
+            colorTextMenu: "#8fa3c4",
+            colorTextMenuActive: "#ffffff",
+            colorTextMenuSelected: "#ffffff",
+            colorTextSubMenuSelected: "#ffffff",
           },
         }}
         route={{
@@ -63,30 +62,32 @@ export function AppShell({ children }: PropsWithChildren) {
             path: item.href,
           })),
         }}
-        menuItemRender={(item, dom) => <Link href={item.path || '/'}>{dom}</Link>}
+        menuItemRender={(item, dom) => (
+          <Link href={item.path || "/"}>{dom}</Link>
+        )}
         headerTitleRender={() => (
           <div className="app-shell__header-title-wrap">
             <div>
               <Text className="app-shell__eyebrow">Operations Console</Text>
               <Space size={10} align="center">
                 <Title level={3} className="app-shell__header-title">
-                  {activeItem?.label || 'Workspace'}
+                  {activeItem?.label || "Workspace"}
                 </Title>
                 {activeItem && <Tag color="blue">{activeItem.key}</Tag>}
               </Space>
             </div>
           </div>
         )}
-        actionsRender={() => [
-          <span key="description" />,
-        ]}
+        actionsRender={() => [<span key="description" />]}
         menuHeaderRender={() => (
           <div className="app-shell__sidebar-header">
             <div className="app-shell__sidebar-brand-expanded">
               <Logo size="md" showText />
               <div className="app-shell__sidebar-divider" />
               <div className="app-shell__sidebar-meta">
-                <span className="app-shell__sidebar-label">Operations Console</span>
+                <span className="app-shell__sidebar-label">
+                  Operations Console
+                </span>
                 <span className="app-shell__sidebar-tag">Development</span>
               </div>
             </div>
@@ -103,15 +104,19 @@ export function AppShell({ children }: PropsWithChildren) {
               </div>
               <nav className="app-shell__footer-nav">
                 <div className="app-shell__footer-nav-section">
-s                  <Text className="app-shell__footer-nav-title">System</Text>
+                  s <Text className="app-shell__footer-nav-title">System</Text>
                   <div className="app-shell__footer-status">
                     <div className="app-shell__footer-status-item">
                       <span className="app-shell__footer-status-dot app-shell__footer-status-dot--live" />
-                      <span className="app-shell__footer-status-label">API Online</span>
+                      <span className="app-shell__footer-status-label">
+                        API Online
+                      </span>
                     </div>
                     <div className="app-shell__footer-status-item">
                       <span className="app-shell__footer-status-dot app-shell__footer-status-dot--live" />
-                      <span className="app-shell__footer-status-label">Client Ready</span>
+                      <span className="app-shell__footer-status-label">
+                        Client Ready
+                      </span>
                     </div>
                   </div>
                 </div>

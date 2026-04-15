@@ -2,11 +2,11 @@
  * React Query Client Configuration
  */
 
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { client } from '@/api/generated/client.gen';
+import { useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { client } from "@/api/generated/client.gen";
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -22,24 +22,22 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
             retry: 1,
           },
         },
-      })
+      }),
   );
 
   useEffect(() => {
     client.setConfig({
       ...client.getConfig(),
-      baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000',
+      baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000",
       headers: {
         ...client.getConfig().headers,
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json',
+        Accept: "application/vnd.api+json",
+        "Content-Type": "application/vnd.api+json",
       },
     });
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

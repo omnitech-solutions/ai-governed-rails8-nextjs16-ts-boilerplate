@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import { Button, Space, Statistic, Typography } from 'antd';
-import { PageContainer, ProCard } from '@ant-design/pro-components';
-import { PlusOutlined } from '@ant-design/icons';
-import { ResourceFormDialog } from '@/components/ResourceForm';
-import { ResourcePagination } from '@/components/Pagination';
-import { ResourceTable } from '@/components/ResourceTable';
-import type { PaginationMeta } from '@/components/Pagination';
-import type { ResourceMeta } from '@/config/resources';
+import { useMemo, useState } from "react";
+import { Button, Space, Statistic, Typography } from "antd";
+import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { PlusOutlined } from "@ant-design/icons";
+import { ResourceFormDialog } from "@/components/ResourceForm";
+import { ResourcePagination } from "@/components/Pagination";
+import { ResourceTable } from "@/components/ResourceTable";
+import type { PaginationMeta } from "@/components/Pagination";
+import type { ResourceMeta } from "@/config/resources";
 
 const { Paragraph, Text, Title } = Typography;
 
@@ -17,7 +17,9 @@ interface CollectionResult<T> {
   meta?: Partial<PaginationMeta>;
 }
 
-interface ResourceWorkspaceProps<T extends Record<string, any>> {
+interface ResourceWorkspaceProps<
+  T extends Record<string, unknown> & { id?: number | string },
+> {
   createPending?: boolean;
   data?: CollectionResult<T>;
   deletePending?: boolean;
@@ -34,14 +36,14 @@ interface ResourceWorkspaceProps<T extends Record<string, any>> {
 }
 
 function getTotal(data?: CollectionResult<unknown>) {
-  if (typeof data?.meta?.total === 'number') {
+  if (typeof data?.meta?.total === "number") {
     return data.meta.total;
   }
 
   return data?.data?.length || 0;
 }
 
-export function ResourceWorkspace<T extends Record<string, any>>({
+export function ResourceWorkspace<T extends Record<string, unknown>>({
   createPending,
   data,
   deletePending,
@@ -67,19 +69,19 @@ export function ResourceWorkspace<T extends Record<string, any>>({
   const stats = useMemo(
     () => [
       {
-        label: 'Records',
+        label: "Records",
         value: itemCount,
       },
       {
-        label: 'Page',
+        label: "Page",
         value: pageMeta?.page || page,
       },
       {
-        label: 'Per Page',
+        label: "Per Page",
         value: pageMeta?.perPage || pageSize,
       },
     ],
-    [itemCount, pageMeta?.page, pageMeta?.perPage, page, pageSize]
+    [itemCount, pageMeta?.page, pageMeta?.perPage, page, pageSize],
   );
 
   const handleCreateClick = () => {
@@ -93,7 +95,11 @@ export function ResourceWorkspace<T extends Record<string, any>>({
   };
 
   const handleSubmit = async (formData: T) => {
-    if (editingRecord?.id) {
+    if (
+      editingRecord?.id &&
+      (typeof editingRecord.id === "string" ||
+        typeof editingRecord.id === "number")
+    ) {
       await onEdit({ id: editingRecord.id, data: formData });
       return;
     }
@@ -119,15 +125,26 @@ export function ResourceWorkspace<T extends Record<string, any>>({
           {resource.createLabel}
         </Button>,
       ]}
-      content={<Paragraph className="resource-workspace__subtitle">{resource.subtitle}</Paragraph>}
+      content={
+        <Paragraph className="resource-workspace__subtitle">
+          {resource.subtitle}
+        </Paragraph>
+      }
       footer={[]}
     >
       <ProCard ghost gutter={[16, 16]} className="resource-workspace__cards">
         {stats.map((stat) => (
-          <ProCard key={stat.label} colSpan={{ xs: 24, md: 8 }} className="resource-workspace__stat-card" bordered>
+          <ProCard
+            key={stat.label}
+            colSpan={{ xs: 24, md: 8 }}
+            className="resource-workspace__stat-card"
+            bordered
+          >
             <Text className="resource-workspace__stat-label">{stat.label}</Text>
-            <Statistic value={stat.value} style={{ fontSize: 28, fontWeight: 700 }} />
-
+            <Statistic
+              value={stat.value}
+              style={{ fontSize: 28, fontWeight: 700 }}
+            />
           </ProCard>
         ))}
       </ProCard>
@@ -184,7 +201,13 @@ export function ResourceWorkspace<T extends Record<string, any>>({
         schema={resource.formSchema}
         initialData={editingRecord || undefined}
         onSubmit={handleSubmit}
-        title={editTitle ? editTitle(editingRecord) : editingRecord ? `Edit ${resource.title}` : resource.createLabel}
+        title={
+          editTitle
+            ? editTitle(editingRecord)
+            : editingRecord
+              ? `Edit ${resource.title}`
+              : resource.createLabel
+        }
         resourceType={resource.key}
         isEdit={Boolean(editingRecord)}
         confirmLoading={createPending}

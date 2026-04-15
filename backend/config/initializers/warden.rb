@@ -24,13 +24,13 @@ Warden::Strategies.add(:token_strategy) do
   def authenticate!
     # Placeholder: Always fail authentication with nil user for backward compatibility
     # When authentication is implemented, validate the token and set the user
-    fail!('Authentication not implemented')
+    fail!("Authentication not implemented")
   end
 end
 
 Rails.application.config.middleware.use Warden::Manager do |manager|
   manager.default_strategies :token_strategy
   manager.failure_app = lambda do |_env|
-    [401, { 'Content-Type' => 'application/json' }, [{ error: 'Unauthorized' }.to_json]]
+    [ 401, { "Content-Type" => "application/json" }, [ { error: "Unauthorized" }.to_json ] ]
   end
 end

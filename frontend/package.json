@@ -6,7 +6,7 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -40,6 +40,7 @@
     "@vitest/ui": "^4.1.4",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.3",
+    "prettier": "^3.8.3",
     "typescript": "5.9.3",
     "vitest": "^4.1.4"
   }

@@ -3,14 +3,14 @@
  * Renders a form dialog using @rjsf/antd with Ant Design
  */
 
-'use client';
+"use client";
 
-import { useRef, useState } from 'react';
-import { App, Alert, Button, Modal, Space, Typography } from 'antd';
-import Form from '@rjsf/antd';
-import validator from '@rjsf/validator-ajv8';
-import type { JsonSchema } from '@/types/schema';
-import { parseApiErrors, type ParsedErrors } from '@/lib/json-api';
+import { useRef, useState } from "react";
+import { App, Alert, Button, Modal, Space, Typography } from "antd";
+import Form from "@rjsf/antd";
+import validator from "@rjsf/validator-ajv8";
+import type { JsonSchema } from "@/types/schema";
+import { parseApiErrors, type ParsedErrors } from "@/lib/json-api";
 
 const { Paragraph, Text } = Typography;
 
@@ -26,7 +26,7 @@ export interface ResourceFormDialogProps<T> {
   isEdit?: boolean;
 }
 
-export function ResourceFormDialog<T extends Record<string, any>>({
+export function ResourceFormDialog<T extends Record<string, unknown>>({
   confirmLoading = false,
   open,
   onClose,
@@ -38,12 +38,19 @@ export function ResourceFormDialog<T extends Record<string, any>>({
   isEdit = false,
 }: ResourceFormDialogProps<T>) {
   const { message } = App.useApp();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formRef = useRef<any>(null);
   const formData = initialData ? { ...initialData } : {};
-  const [errors, setErrors] = useState<ParsedErrors>({ baseErrors: [], fieldErrors: {} });
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [errors, setErrors] = useState<ParsedErrors>({
+    baseErrors: [],
+    fieldErrors: {},
+  });
 
-  const handleSubmit = async ({ formData: submittedData }: { formData?: T }) => {
+  const handleSubmit = async ({
+    formData: submittedData,
+  }: {
+    formData?: T;
+  }) => {
     try {
       if (!submittedData) {
         return;
@@ -51,28 +58,27 @@ export function ResourceFormDialog<T extends Record<string, any>>({
 
       // Remove id from create requests
       const dataToSubmit = isEdit ? submittedData : { ...submittedData };
-      if (!isEdit && 'id' in dataToSubmit) {
+      if (!isEdit && "id" in dataToSubmit) {
         delete dataToSubmit.id;
       }
 
-      setHasSubmitted(true);
       setErrors({ baseErrors: [], fieldErrors: {} });
 
       await onSubmit(dataToSubmit);
-      message.success('Saved successfully');
+      message.success("Saved successfully");
       onClose();
     } catch (err) {
       const parsedErrors = parseApiErrors(err);
       setErrors(parsedErrors);
-      
+
       if (parsedErrors.baseErrors.length > 0) {
-        message.error('Failed to save. Please check the form for errors.');
+        message.error("Failed to save. Please check the form for errors.");
       }
     }
   };
 
   // Build errorSchema for rjsf from fieldErrors
-  const errorSchema: any = {};
+  const errorSchema: Record<string, { __errors: string[] }> = {};
   Object.entries(errors.fieldErrors).forEach(([field, errorMessage]) => {
     errorSchema[field] = {
       __errors: [errorMessage],
@@ -83,7 +89,6 @@ export function ResourceFormDialog<T extends Record<string, any>>({
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
       setErrors({ baseErrors: [], fieldErrors: {} });
-      setHasSubmitted(false);
     }
   };
 
@@ -106,8 +111,8 @@ export function ResourceFormDialog<T extends Record<string, any>>({
           <h2 className="resource-form-modal__title">{title}</h2>
           <Paragraph className="resource-form-modal__copy">
             {isEdit
-              ? 'Update the selected record and save the changes back to the API.'
-              : 'Use the schema-backed form below to create a new record.'}
+              ? "Update the selected record and save the changes back to the API."
+              : "Use the schema-backed form below to create a new record."}
           </Paragraph>
         </div>
       </div>
@@ -132,16 +137,18 @@ export function ResourceFormDialog<T extends Record<string, any>>({
 
       <Form
         ref={formRef}
-        schema={schema as any}
+        // @ts-expect-error - JsonSchema vs RJSFSchema type incompatibility
+        schema={schema}
         validator={validator}
         formData={formData}
         onSubmit={handleSubmit}
-        onError={() => message.error('Please fix the validation errors before saving.')}
-        // @ts-ignore - RJSF 5.x/6.x prop compatibility
+        onError={() =>
+          message.error("Please fix the validation errors before saving.")
+        }
         errorSchema={errorSchema}
         className="resource-form-modal__form"
         uiSchema={{
-          'ui:options': {
+          "ui:options": {
             label: false,
           },
         }}
@@ -153,7 +160,13 @@ export function ResourceFormDialog<T extends Record<string, any>>({
       >
         <div className="resource-form-modal__footer">
           <Space size="middle">
-            <Button onClick={() => { handleOpenChange(false); onClose(); }} size="large">
+            <Button
+              onClick={() => {
+                handleOpenChange(false);
+                onClose();
+              }}
+              size="large"
+            >
               Cancel
             </Button>
             <Button
@@ -162,7 +175,7 @@ export function ResourceFormDialog<T extends Record<string, any>>({
               loading={confirmLoading}
               onClick={() => formRef.current?.submit()}
             >
-              {isEdit ? 'Save changes' : 'Create record'}
+              {isEdit ? "Save changes" : "Create record"}
             </Button>
           </Space>
         </div>

@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
 namespace :openapi do
-  desc 'Generate OpenAPI 3.0 spec from Graphiti resources'
+  desc "Generate OpenAPI 3.0 spec from Graphiti resources"
   task generate: :environment do
-    api_base_url = ENV.fetch('API_BASE_URL', 'http://localhost:3000')
+    api_base_url = ENV.fetch("API_BASE_URL", "http://localhost:3000")
 
     # Cache for controller introspection results to avoid repeated file reads
     @response_style_cache = {}
 
     # Type mapping from Graphiti to OpenAPI
     TYPE_MAPPING = {
-      integer: { type: 'integer' },
-      integer_id: { type: 'integer' },
-      string: { type: 'string' },
-      date: { type: 'string', format: 'date' },
-      datetime: { type: 'string', format: 'date-time' },
-      boolean: { type: 'boolean' },
-      float: { type: 'number', format: 'float' },
-      decimal: { type: 'number', format: 'double' },
-      hash: { type: 'object' },
-      array: { type: 'array', items: { type: 'object' } },
-      uuid: { type: 'string', format: 'uuid' }
+      integer: { type: "integer" },
+      integer_id: { type: "integer" },
+      string: { type: "string" },
+      date: { type: "string", format: "date" },
+      datetime: { type: "string", format: "date-time" },
+      boolean: { type: "boolean" },
+      float: { type: "number", format: "float" },
+      decimal: { type: "number", format: "double" },
+      hash: { type: "object" },
+      array: { type: "array", items: { type: "object" } },
+      uuid: { type: "string", format: "uuid" }
     }.freeze
 
     # Discover all Graphiti resources
@@ -28,19 +28,19 @@ namespace :openapi do
 
     # Build OpenAPI spec
     spec = {
-      'openapi' => '3.0.0',
-      'info' => {
-        'title' => 'Boilerplate API',
-        'version' => '1.0.0',
-        'description' => 'API for managing companies, users, projects, and tasks'
+      "openapi" => "3.0.0",
+      "info" => {
+        "title" => "Boilerplate API",
+        "version" => "1.0.0",
+        "description" => "API for managing companies, users, projects, and tasks"
       },
-      'servers' => [
-        { 'url' => api_base_url, 'description' => 'Development server' },
-        { 'url' => 'https://api.example.com', 'description' => 'Production server (placeholder)' }
+      "servers" => [
+        { "url" => api_base_url, "description" => "Development server" },
+        { "url" => "https://api.example.com", "description" => "Production server (placeholder)" }
       ],
-      'paths' => {},
-      'components' => {
-        'schemas' => {}
+      "paths" => {},
+      "components" => {
+        "schemas" => {}
       }
     }
 
@@ -62,14 +62,14 @@ namespace :openapi do
       required_fields = determine_required_fields(resource_class, attributes, resource_type)
 
       # Generate schema for this resource
-      spec['components']['schemas'][resource_name] = generate_schema(attributes, TYPE_MAPPING)
+      spec["components"]["schemas"][resource_name] = generate_schema(attributes, TYPE_MAPPING)
 
       # Add filter and relationship documentation to the schema description
       if filters.any? || relationships.any?
         description = []
         description << "**Filters:** #{filters.keys.join(', ')}" if filters.any?
         description << "**Relationships:** #{relationships.keys.join(', ')}" if relationships.any?
-        spec['components']['schemas'][resource_name]['description'] = description.join('\n') if description.any?
+        spec["components"]["schemas"][resource_name]["description"] = description.join('\n') if description.any?
       end
 
       # Generate paths
@@ -77,24 +77,24 @@ namespace :openapi do
       # Dynamically determine response styles from controller introspection
       index_style = determine_index_response_style(resource_class)
       create_style = determine_create_response_style(resource_class)
-      spec['paths'][base_path] =
+      spec["paths"][base_path] =
         generate_index_path(resource_type, resource_name, attributes, TYPE_MAPPING, index_style, create_style, required_fields,
                             filters)
-      spec['paths']["#{base_path}/{id}"] =
+      spec["paths"]["#{base_path}/{id}"] =
         generate_member_path(resource_type, resource_name, attributes, TYPE_MAPPING, create_style, required_fields)
     end
 
     # Write to file
-    output_path = Rails.root.join('public/api-docs/v1/openapi.json')
+    output_path = Rails.root.join("public/api-docs/v1/openapi.json")
     FileUtils.mkdir_p(output_path.dirname)
     File.write(output_path, JSON.pretty_generate(spec))
 
     puts "OpenAPI spec generated at #{output_path}"
   end
 
-  desc 'Validate OpenAPI spec'
+  desc "Validate OpenAPI spec"
   task validate: :environment do
-    spec_path = Rails.root.join('public/api-docs/v1/openapi.json')
+    spec_path = Rails.root.join("public/api-docs/v1/openapi.json")
 
     unless File.exist?(spec_path)
       puts "OpenAPI spec not found at #{spec_path}"
@@ -113,12 +113,12 @@ namespace :openapi do
       end
 
       # Check openapi version
-      unless ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].include?(schema['openapi'])
+      unless [ "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.1.0" ].include?(schema["openapi"])
         puts "Invalid OpenAPI spec: unsupported openapi version: #{schema['openapi']}"
         exit 1
       end
 
-      puts 'OpenAPI spec is valid'
+      puts "OpenAPI spec is valid"
     rescue JSON::ParserError => e
       puts "Invalid JSON in OpenAPI spec: #{e.message}"
       exit 1
@@ -129,9 +129,9 @@ namespace :openapi do
 
   def discover_resources
     # Load all resource files safely without duplicate requires
-    resource_files = Dir[Rails.root.join('app/resources/*_resource.rb')]
+    resource_files = Dir[Rails.root.join("app/resources/*_resource.rb")]
     resource_files.each do |file|
-      basename = File.basename(file, '.rb')
+      basename = File.basename(file, ".rb")
       next if ObjectSpace.each_object(Class).any? { |klass| klass.name == basename.camelize }
 
       require file
@@ -157,11 +157,11 @@ namespace :openapi do
     end
 
     # Ensure id is always included if not present
-    attributes['id'] = :integer unless attributes.key?('id')
+    attributes["id"] = :integer unless attributes.key?("id")
 
     # Ensure timestamps are included if not already
-    attributes['created_at'] = :datetime unless attributes.key?('created_at')
-    attributes['updated_at'] = :datetime unless attributes.key?('updated_at')
+    attributes["created_at"] = :datetime unless attributes.key?("created_at")
+    attributes["updated_at"] = :datetime unless attributes.key?("updated_at")
 
     attributes
   end
@@ -210,7 +210,7 @@ namespace :openapi do
       model = resource_class.model
       if model.respond_to?(:validators_on)
         attributes.each_key do |attr_name|
-          next if attr_name == 'id' || attr_name =~ /_at$/
+          next if attr_name == "id" || attr_name =~ /_at$/
 
           # Check if the model has a presence validator for this attribute
           validators = model.validators_on(attr_name.to_sym)
@@ -244,7 +244,7 @@ namespace :openapi do
     return :array unless controller
 
     # Verify the index action exists
-    return :array unless controller.action_methods.include?('index')
+    return :array unless controller.action_methods.include?("index")
 
     # Get the source code of the index method
     begin
@@ -252,21 +252,21 @@ namespace :openapi do
 
       # Parse the source to detect the render format
       # Normalize whitespace to handle multiline render statements
-      normalized_source = source.gsub(/\s+/, ' ')
+      normalized_source = source.gsub(/\s+/, " ")
 
       # Pattern for wrapped: render json: { data: ..., meta: ... }
       # Check if render json contains both 'data:' and 'meta:' keys
-      style = if normalized_source.include?('render json:') &&
-                 normalized_source.include?('data:') &&
-                 normalized_source.include?('meta:')
+      style = if normalized_source.include?("render json:") &&
+                 normalized_source.include?("data:") &&
+                 normalized_source.include?("meta:")
                 :wrapped
-              # Pattern for array: render json: @companies or render json: @records
-              elsif normalized_source =~ /render\s+json:\s*@\w+/
+      # Pattern for array: render json: @companies or render json: @records
+      elsif normalized_source =~ /render\s+json:\s*@\w+/
                 :array
-              else
+      else
                 # Default to array if pattern not recognized
                 :array
-              end
+      end
     rescue StandardError => e
       # If introspection fails, default to :array
       Rails.logger.debug "Could not introspect index action for #{resource_class.name}: #{e.message}"
@@ -290,7 +290,7 @@ namespace :openapi do
     return :object unless controller
 
     # Check create action first, fall back to update if create doesn't exist
-    action_name = controller.action_methods.include?('create') ? 'create' : 'update'
+    action_name = controller.action_methods.include?("create") ? "create" : "update"
     return :object unless controller.action_methods.include?(action_name)
 
     # Get the source code of the action method
@@ -298,22 +298,22 @@ namespace :openapi do
       source = controller.instance_method(action_name.to_sym).source
 
       # Normalize whitespace to handle multiline render statements
-      normalized_source = source.gsub(/\s+/, ' ')
+      normalized_source = source.gsub(/\s+/, " ")
 
       # Parse the source to detect the render format
       # Pattern for wrapped: render json: { success: true, data: ... }
       # Check if render json contains both 'success:' and 'data:' keys
-      style = if normalized_source.include?('render json:') &&
-                 normalized_source.include?('success:') &&
-                 normalized_source.include?('data:')
+      style = if normalized_source.include?("render json:") &&
+                 normalized_source.include?("success:") &&
+                 normalized_source.include?("data:")
                 :wrapped
-              # Pattern for object: render json: @company
-              elsif normalized_source =~ /render\s+json:\s*@\w+/
+      # Pattern for object: render json: @company
+      elsif normalized_source =~ /render\s+json:\s*@\w+/
                 :object
-              else
+      else
                 # Default to object if pattern not recognized
                 :object
-              end
+      end
     rescue StandardError => e
       # If introspection fails, default to :object
       Rails.logger.debug "Could not introspect #{action_name} action for #{resource_class.name}: #{e.message}"
@@ -334,50 +334,50 @@ namespace :openapi do
     end
 
     {
-      'type' => 'object',
-      'properties' => properties
+      "type" => "object",
+      "properties" => properties
     }
   end
 
   def generate_index_path(resource_type, resource_name, attributes, type_mapping, index_style, create_style,
                           required_fields, filters)
     style = index_style
-    schema_ref = { '$ref' => "#/components/schemas/#{resource_name}" }
+    schema_ref = { "$ref" => "#/components/schemas/#{resource_name}" }
 
     path = {
-      'get' => {
-        'operationId' => "list#{resource_name.pluralize}",
-        'tags' => [resource_name.pluralize],
-        'summary' => "List all #{resource_type}",
-        'responses' => {
-          '200' => {
-            'description' => "#{resource_type} found",
-            'content' => {
-              'application/json' => {
-                'schema' => build_index_response_schema(style, schema_ref)
+      "get" => {
+        "operationId" => "list#{resource_name.pluralize}",
+        "tags" => [ resource_name.pluralize ],
+        "summary" => "List all #{resource_type}",
+        "responses" => {
+          "200" => {
+            "description" => "#{resource_type} found",
+            "content" => {
+              "application/json" => {
+                "schema" => build_index_response_schema(style, schema_ref)
               }
             }
           }
         }
       },
-      'post' => {
-        'operationId' => "create#{resource_name}",
-        'tags' => [resource_name.pluralize],
-        'summary' => "Create a #{resource_type.singularize}",
-        'requestBody' => {
-          'required' => true,
-          'content' => {
-            'application/json' => {
-              'schema' => build_request_schema(attributes, type_mapping, resource_type, required_fields)
+      "post" => {
+        "operationId" => "create#{resource_name}",
+        "tags" => [ resource_name.pluralize ],
+        "summary" => "Create a #{resource_type.singularize}",
+        "requestBody" => {
+          "required" => true,
+          "content" => {
+            "application/json" => {
+              "schema" => build_request_schema(attributes, type_mapping, resource_type, required_fields)
             }
           }
         },
-        'responses' => {
-          '201' => {
-            'description' => "#{resource_type.singularize} created",
-            'content' => {
-              'application/json' => {
-                'schema' => build_create_response_schema(create_style, schema_ref)
+        "responses" => {
+          "201" => {
+            "description" => "#{resource_type.singularize} created",
+            "content" => {
+              "application/json" => {
+                "schema" => build_create_response_schema(create_style, schema_ref)
               }
             }
           }
@@ -387,23 +387,23 @@ namespace :openapi do
 
     # Add pagination parameters for wrapped responses
     if style == :wrapped
-      path['get']['parameters'] = [
-        { 'name' => 'page', 'in' => 'query', 'schema' => { 'type' => 'integer' } },
-        { 'name' => 'per_page', 'in' => 'query', 'schema' => { 'type' => 'integer' } }
+      path["get"]["parameters"] = [
+        { "name" => "page", "in" => "query", "schema" => { "type" => "integer" } },
+        { "name" => "per_page", "in" => "query", "schema" => { "type" => "integer" } }
       ]
     end
 
     # Add filter parameters for documentation
     if filters.any?
-      path['get']['parameters'] ||= []
+      path["get"]["parameters"] ||= []
       filters.each do |filter_name, filter_config|
         param = {
-          'name' => filter_name,
-          'in' => 'query',
-          'schema' => type_mapping[filter_config[:type]] || { 'type' => 'string' },
-          'description' => "Filter by #{filter_name}"
+          "name" => filter_name,
+          "in" => "query",
+          "schema" => type_mapping[filter_config[:type]] || { "type" => "string" },
+          "description" => "Filter by #{filter_name}"
         }
-        path['get']['parameters'] << param
+        path["get"]["parameters"] << param
       end
     end
 
@@ -411,63 +411,63 @@ namespace :openapi do
   end
 
   def generate_member_path(resource_type, resource_name, attributes, type_mapping, create_style, required_fields)
-    schema_ref = { '$ref' => "#/components/schemas/#{resource_name}" }
+    schema_ref = { "$ref" => "#/components/schemas/#{resource_name}" }
 
     {
-      'get' => {
-        'operationId' => "show#{resource_name}",
-        'tags' => [resource_name.pluralize],
-        'summary' => "Show a #{resource_type.singularize}",
-        'parameters' => [
-          { 'name' => 'id', 'in' => 'path', 'required' => true, 'schema' => { 'type' => 'integer' } }
+      "get" => {
+        "operationId" => "show#{resource_name}",
+        "tags" => [ resource_name.pluralize ],
+        "summary" => "Show a #{resource_type.singularize}",
+        "parameters" => [
+          { "name" => "id", "in" => "path", "required" => true, "schema" => { "type" => "integer" } }
         ],
-        'responses' => {
-          '200' => {
-            'description' => "#{resource_type.singularize} found",
-            'content' => {
-              'application/json' => {
-                'schema' => schema_ref
+        "responses" => {
+          "200" => {
+            "description" => "#{resource_type.singularize} found",
+            "content" => {
+              "application/json" => {
+                "schema" => schema_ref
               }
             }
           }
         }
       },
-      'patch' => {
-        'operationId' => "update#{resource_name}",
-        'tags' => [resource_name.pluralize],
-        'summary' => "Update a #{resource_type.singularize}",
-        'parameters' => [
-          { 'name' => 'id', 'in' => 'path', 'required' => true, 'schema' => { 'type' => 'integer' } }
+      "patch" => {
+        "operationId" => "update#{resource_name}",
+        "tags" => [ resource_name.pluralize ],
+        "summary" => "Update a #{resource_type.singularize}",
+        "parameters" => [
+          { "name" => "id", "in" => "path", "required" => true, "schema" => { "type" => "integer" } }
         ],
-        'requestBody' => {
-          'required' => true,
-          'content' => {
-            'application/json' => {
-              'schema' => build_request_schema(attributes, type_mapping, resource_type, required_fields, optional: true)
+        "requestBody" => {
+          "required" => true,
+          "content" => {
+            "application/json" => {
+              "schema" => build_request_schema(attributes, type_mapping, resource_type, required_fields, optional: true)
             }
           }
         },
-        'responses' => {
-          '200' => {
-            'description' => "#{resource_type.singularize} updated",
-            'content' => {
-              'application/json' => {
-                'schema' => build_create_response_schema(create_style, schema_ref)
+        "responses" => {
+          "200" => {
+            "description" => "#{resource_type.singularize} updated",
+            "content" => {
+              "application/json" => {
+                "schema" => build_create_response_schema(create_style, schema_ref)
               }
             }
           }
         }
       },
-      'delete' => {
-        'operationId' => "delete#{resource_name}",
-        'tags' => [resource_name.pluralize],
-        'summary' => "Delete a #{resource_type.singularize}",
-        'parameters' => [
-          { 'name' => 'id', 'in' => 'path', 'required' => true, 'schema' => { 'type' => 'integer' } }
+      "delete" => {
+        "operationId" => "delete#{resource_name}",
+        "tags" => [ resource_name.pluralize ],
+        "summary" => "Delete a #{resource_type.singularize}",
+        "parameters" => [
+          { "name" => "id", "in" => "path", "required" => true, "schema" => { "type" => "integer" } }
         ],
-        'responses' => {
-          '204' => {
-            'description' => "#{resource_type.singularize} deleted"
+        "responses" => {
+          "204" => {
+            "description" => "#{resource_type.singularize} deleted"
           }
         }
       }
@@ -478,29 +478,29 @@ namespace :openapi do
     case style
     when :array
       {
-        'type' => 'array',
-        'items' => schema_ref
+        "type" => "array",
+        "items" => schema_ref
       }
     when :wrapped
       {
-        'type' => 'object',
-        'properties' => {
-          'data' => {
-            'type' => 'array',
-            'items' => schema_ref
+        "type" => "object",
+        "properties" => {
+          "data" => {
+            "type" => "array",
+            "items" => schema_ref
           },
-          'meta' => {
-            'type' => 'object',
-            'properties' => {
-              'page' => { 'type' => 'integer' },
-              'per_page' => { 'type' => 'integer' },
-              'total' => { 'type' => 'integer' }
+          "meta" => {
+            "type" => "object",
+            "properties" => {
+              "page" => { "type" => "integer" },
+              "per_page" => { "type" => "integer" },
+              "total" => { "type" => "integer" }
             }
           }
         }
       }
     else
-      { 'type' => 'array', 'items' => schema_ref }
+      { "type" => "array", "items" => schema_ref }
     end
   end
 
@@ -508,10 +508,10 @@ namespace :openapi do
     case style
     when :wrapped
       {
-        'type' => 'object',
-        'properties' => {
-          'success' => { 'type' => 'boolean' },
-          'data' => schema_ref
+        "type" => "object",
+        "properties" => {
+          "success" => { "type" => "boolean" },
+          "data" => schema_ref
         }
       }
     else
@@ -537,11 +537,11 @@ namespace :openapi do
     end
 
     schema = {
-      'type' => 'object',
-      'properties' => properties
+      "type" => "object",
+      "properties" => properties
     }
 
-    schema['required'] = required if required.any?
+    schema["required"] = required if required.any?
 
     schema
   end

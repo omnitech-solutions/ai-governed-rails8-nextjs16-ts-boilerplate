@@ -18,11 +18,11 @@ module Api
 
       def record_not_found(error)
         render json: {
-          errors: [{
-            title: 'Not Found',
+          errors: [ {
+            title: "Not Found",
             detail: error.message,
             status: 404
-          }]
+          } ]
         }, status: :not_found
       end
 
@@ -30,7 +30,7 @@ module Api
         render json: {
           errors: error.record.errors.map do |attribute, message|
             {
-              title: 'Validation Error',
+              title: "Validation Error",
               detail: message,
               status: 422,
               source: {
@@ -43,11 +43,11 @@ module Api
 
       def validation_error(error)
         render json: {
-          errors: [{
-            title: 'Validation Error',
+          errors: [ {
+            title: "Validation Error",
             detail: error.message,
             status: 422
-          }]
+          } ]
         }, status: :unprocessable_entity
       end
     end

@@ -36,7 +36,7 @@
     "strip-timestamps": "node scripts/strip-timestamps.js",
     "workflows:sync": "./scripts/sync-windsurf-workflows.sh",
     "opencode:sync": "./scripts/sync-opencode.sh",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",

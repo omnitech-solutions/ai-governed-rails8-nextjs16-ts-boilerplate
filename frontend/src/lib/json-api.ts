@@ -81,14 +81,16 @@ export function serialize<T>(data: T, type: string): JsonApiRequest {
  * @param response - The JSON:API response
  * @returns Pagination metadata or undefined
  */
-export function extractPaginationMeta(response: JsonApiResponse): {
-  page: number;
-  perPage: number;
-  total: number;
-  totalPages: number;
-} | undefined {
+export function extractPaginationMeta(response: JsonApiResponse):
+  | {
+      page: number;
+      perPage: number;
+      total: number;
+      totalPages: number;
+    }
+  | undefined {
   const meta = response.meta;
-  if (!meta || typeof meta.page !== 'number') {
+  if (!meta || typeof meta.page !== "number") {
     return undefined;
   }
 
@@ -124,16 +126,16 @@ export function parseApiErrors(error: unknown): ParsedErrors {
   const baseErrors: string[] = [];
   const fieldErrors: Record<string, string> = {};
 
-  if (error && typeof error === 'object') {
-    const err = error as any;
-    
+  if (error && typeof error === "object") {
+    const err = error as { errors?: JsonApiError[]; message?: string };
+
     // Handle JSON:API error format
     if (err.errors && Array.isArray(err.errors)) {
       err.errors.forEach((apiError: JsonApiError) => {
         if (apiError.source?.pointer) {
           // Extract field name from JSON:API pointer (e.g., "/data/attributes/name" -> "name")
           const pointer = apiError.source.pointer;
-          const parts = pointer.split('/');
+          const parts = pointer.split("/");
           const fieldName = parts[parts.length - 1];
           if (fieldName) {
             fieldErrors[fieldName] = apiError.detail;
@@ -150,7 +152,7 @@ export function parseApiErrors(error: unknown): ParsedErrors {
       // Handle simple error messages
       baseErrors.push(err.message);
     }
-  } else if (typeof error === 'string') {
+  } else if (typeof error === "string") {
     baseErrors.push(error);
   }
 

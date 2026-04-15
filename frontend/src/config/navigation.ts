@@ -1,7 +1,5 @@
-import {
-  HomeOutlined,
-} from '@ant-design/icons';
-import type { ComponentType } from 'react';
+import { HomeOutlined } from "@ant-design/icons";
+import type { ComponentType } from "react";
 
 export interface AppNavItem {
   description: string;
@@ -13,10 +11,10 @@ export interface AppNavItem {
 
 export const appNavigation: AppNavItem[] = [
   {
-    key: 'home',
-    label: 'Overview',
-    href: '/',
-    description: 'Entry point and system summary',
+    key: "home",
+    label: "Overview",
+    href: "/",
+    description: "Entry point and system summary",
     icon: HomeOutlined,
   },
 ];

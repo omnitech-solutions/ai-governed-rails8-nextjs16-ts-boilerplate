@@ -3,7 +3,7 @@
  * Renders Ant Design Pagination with URL query parameter updates
  */
 
-import { Pagination } from 'antd';
+import { Pagination } from "antd";
 
 export interface PaginationMeta {
   page: number;
@@ -17,7 +17,10 @@ export interface ResourcePaginationProps {
   onPageChange: (page: number, pageSize: number) => void;
 }
 
-export function ResourcePagination({ meta, onPageChange }: ResourcePaginationProps) {
+export function ResourcePagination({
+  meta,
+  onPageChange,
+}: ResourcePaginationProps) {
   const { page, perPage, total } = meta;
 
   return (
@@ -30,8 +33,8 @@ export function ResourcePagination({ meta, onPageChange }: ResourcePaginationPro
       showLessItems
       showSizeChanger
       showTotal={(total) => `Total ${total} items`}
-      pageSizeOptions={['10', '20', '50']}
-      style={{ marginTop: 16, textAlign: 'right' }}
+      pageSizeOptions={["10", "20", "50"]}
+      style={{ marginTop: 16, textAlign: "right" }}
     />
   );
 }

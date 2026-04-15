@@ -15,9 +15,9 @@ module Api
 
         data = if records.respond_to?(:to_a)
                  records.to_a.map { |record| serialize_single_record(record, type) }
-               else
-                 [serialize_single_record(records, type)]
-               end
+        else
+                 [ serialize_single_record(records, type) ]
+        end
 
         response = { data: data }
 

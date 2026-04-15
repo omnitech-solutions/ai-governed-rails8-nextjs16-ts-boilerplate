@@ -26,11 +26,11 @@ module Api
         @parent = parent_model_class.find(parent_param)
       rescue ActiveRecord::RecordNotFound
         render json: {
-          errors: [{
-            title: 'Not Found',
+          errors: [ {
+            title: "Not Found",
             detail: "#{parent_model_class.name} not found",
             status: 404
-          }]
+          } ]
         }, status: :not_found
       end
 

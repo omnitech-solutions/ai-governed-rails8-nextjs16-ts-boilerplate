@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 namespace :openapi do
-  desc 'Validate the manual OpenAPI spec file (v1/openapi.json)'
+  desc "Validate the manual OpenAPI spec file (v1/openapi.json)"
   task validate: :environment do
-    spec_path = Rails.root.join('public', 'api-docs', 'v1', 'openapi.json')
+    spec_path = Rails.root.join("public", "api-docs", "v1", "openapi.json")
 
     unless spec_path.exist?
       puts "❌ Error: OpenAPI spec file not found at #{spec_path}"
@@ -28,19 +28,19 @@ namespace :openapi do
     end
 
     # Validate openapi version format
-    unless spec_json['openapi'].is_a?(String) && spec_json['openapi'].match?(/\d+\.\d+\.\d+/)
-      puts '❌ Error: Invalid or missing openapi version (expected format: x.y.z)'
+    unless spec_json["openapi"].is_a?(String) && spec_json["openapi"].match?(/\d+\.\d+\.\d+/)
+      puts "❌ Error: Invalid or missing openapi version (expected format: x.y.z)"
       exit 1
     end
 
     # Validate info object
-    unless spec_json['info'].is_a?(Hash)
+    unless spec_json["info"].is_a?(Hash)
       puts "❌ Error: 'info' must be an object"
       exit 1
     end
 
     info_required_keys = %w[title version]
-    info_missing_keys = info_required_keys - spec_json['info'].keys
+    info_missing_keys = info_required_keys - spec_json["info"].keys
 
     unless info_missing_keys.empty?
       puts "❌ Error: Missing required keys in 'info': #{info_missing_keys.join(', ')}"
@@ -48,24 +48,24 @@ namespace :openapi do
     end
 
     # Validate paths object
-    unless spec_json['paths'].is_a?(Hash)
+    unless spec_json["paths"].is_a?(Hash)
       puts "❌ Error: 'paths' must be an object"
       exit 1
     end
 
-    puts "⚠️  Warning: 'paths' object is empty (no API endpoints documented)" if spec_json['paths'].empty?
+    puts "⚠️  Warning: 'paths' object is empty (no API endpoints documented)" if spec_json["paths"].empty?
 
     # Validate that all paths start with /api/v1
-    invalid_paths = spec_json['paths'].keys.reject { |path| path.start_with?('/api/v1/') }
+    invalid_paths = spec_json["paths"].keys.reject { |path| path.start_with?("/api/v1/") }
     puts "⚠️  Warning: Some paths do not start with /api/v1/: #{invalid_paths.join(', ')}" unless invalid_paths.empty?
 
     # Validate that all operations have operationId
     operations_without_id = []
-    spec_json['paths'].each do |path, path_data|
+    spec_json["paths"].each do |path, path_data|
       path_data.each do |method, operation_data|
         next unless operation_data.is_a?(Hash)
 
-        operations_without_id << "#{method.upcase} #{path}" unless operation_data['operationId']
+        operations_without_id << "#{method.upcase} #{path}" unless operation_data["operationId"]
       end
     end
 
@@ -73,7 +73,7 @@ namespace :openapi do
       puts "⚠️  Warning: Some operations are missing operationId (recommended for Swagger UI): #{operations_without_id.join(', ')}"
     end
 
-    puts '✅ OpenAPI spec validation passed'
+    puts "✅ OpenAPI spec validation passed"
     puts "   File: #{spec_path}"
     puts "   OpenAPI Version: #{spec_json['openapi']}"
     puts "   API Title: #{spec_json['info']['title']}"

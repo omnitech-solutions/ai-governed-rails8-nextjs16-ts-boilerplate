@@ -3,8 +3,8 @@
  * Manages sidebar collapsed state
  */
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface SidebarState {
   collapsed: boolean;
@@ -20,7 +20,7 @@ export const useSidebarStore = create<SidebarState>()(
       setCollapsed: (collapsed) => set({ collapsed }),
     }),
     {
-      name: 'sidebar-storage',
-    }
-  )
+      name: "sidebar-storage",
+    },
+  ),
 );
