@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "ai-governed-rails8-nextjs16-ts-boilerplate",
   "version": "1.0.0",
   "private": true,
   "description": "Boilerplate Rails API and Next.js app",
@@ -30,7 +30,7 @@
     "frontend:test:e2e": "pnpm --filter frontend test:e2e",
     "frontend:format": "pnpm --filter frontend format",
     "frontend:generate:api": "pnpm --filter frontend generate:api",
-    "rules:init": "ai-rulez init 'Boilerplate'",
+    "rules:init": "ai-rulez init 'AI Governed Rails 8 Next 16 TS Boilerplate'",
     "rules:generate": "./scripts/refresh-ai-rules.sh",
     "rules:watch": "tsx scripts/watch-rules.ts",
     "strip-timestamps": "node scripts/strip-timestamps.js",
