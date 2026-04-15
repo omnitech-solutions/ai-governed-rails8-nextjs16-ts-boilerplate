@@ -1,5 +1,8 @@
 echo "Running pre-push checks..."
 
+# Change to backend directory for Rails commands
+cd backend
+
 # Run RSpec with fail-fast
 echo "Running RSpec tests..."
 bundle exec rspec --fail-fast
