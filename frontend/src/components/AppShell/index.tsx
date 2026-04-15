@@ -7,6 +7,7 @@ import { Layout, Space, Tag, Typography } from "antd";
 import { ProLayout } from "@ant-design/pro-components";
 import { appNavigation } from "@/config/navigation";
 import { Logo, LogoMark } from "@/components/Logo";
+import { useState } from "react";
 
 const { Text, Title } = Typography;
 
@@ -19,6 +20,7 @@ function getActiveItem(pathname: string) {
 export function AppShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const activeItem = getActiveItem(pathname);
+  const [_collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="app-shell">
@@ -32,6 +34,7 @@ export function AppShell({ children }: PropsWithChildren) {
         location={{ pathname }}
         siderWidth={288}
         defaultCollapsed={false}
+        onCollapse={setCollapsed}
         token={{
           bgLayout: "transparent",
           colorBgAppListIconHover: "rgba(255,255,255,0.08)",
