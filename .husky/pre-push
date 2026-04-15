@@ -1,0 +1,27 @@
+echo "Running pre-push checks..."
+
+# Run RSpec with fail-fast
+echo "Running RSpec tests..."
+bundle exec rspec --fail-fast
+if [ $? -ne 0 ]; then
+  echo "❌ RSpec tests failed. Aborting push."
+  exit 1
+fi
+
+# Run Brakeman security scanner (allow warnings but fail on errors)
+echo "Running Brakeman security scan..."
+bundle exec brakeman --no-pager --no-exit-on-warn --exit-on-error
+if [ $? -ne 0 ]; then
+  echo "❌ Brakeman found security issues. Aborting push."
+  exit 1
+fi
+
+# Run bundle-audit to check for vulnerable gems
+echo "Running bundle-audit..."
+bundle exec bundle-audit check --update
+if [ $? -ne 0 ]; then
+  echo "❌ bundle-audit found vulnerable gems. Aborting push."
+  exit 1
+fi
+
+echo "✅ All pre-push checks passed."

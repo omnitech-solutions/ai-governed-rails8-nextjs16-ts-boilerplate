@@ -1,0 +1,7 @@
+# Check if Gemfile or Gemfile.lock changed in the merge
+CHANGED_FILES=$(git diff-tree --name-only -r ORIG_HEAD HEAD 2>/dev/null || echo "")
+
+if echo "$CHANGED_FILES" | grep -q "Gemfile\|Gemfile.lock"; then
+  echo "Gemfile or Gemfile.lock changed in merge. Running bundle install..."
+  bundle install
+fi

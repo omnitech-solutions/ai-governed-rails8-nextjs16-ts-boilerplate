@@ -1,0 +1,7 @@
+# Check if Gemfile or Gemfile.lock changed
+CHANGED_FILES=$(git diff-tree --name-only -r HEAD@{1} HEAD 2>/dev/null || echo "")
+
+if echo "$CHANGED_FILES" | grep -q "Gemfile\|Gemfile.lock"; then
+  echo "Gemfile or Gemfile.lock changed. Running bundle install..."
+  bundle install
+fi

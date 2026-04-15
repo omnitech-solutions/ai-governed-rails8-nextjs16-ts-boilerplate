@@ -1,0 +1,18 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "rails server -p 3000",
+    "console": "rails console",
+    "migrate": "rails db:migrate",
+    "rollback": "rails db:rollback",
+    "seed": "rails db:seed",
+    "reset": "rails db:reset",
+    "test": "bundle exec rspec",
+    "rubocop": "bundle exec rubocop",
+    "rubocop:autocorrect": "bundle exec rubocop -A",
+    "generate:openapi": "bundle exec rake rswag:specs:swaggerize",
+    "validate:openapi": "bundle exec rake openapi:validate"
+  }
+}

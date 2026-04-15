@@ -1,0 +1,55 @@
+# AI-Rulez V3 MCP Servers Configuration
+$schema: https://raw.githubusercontent.com/Goldziher/ai-rulez/main/schema/ai-rules-v3-mcp.schema.json
+
+version: "3.0"
+
+mcp_servers:
+  # AI-Rulez MCP server for managing configuration
+  - name: ai-rulez
+    description: Manage .ai-rulez/ configuration (rules, skills, agents)
+    command: npx
+    args:
+      - "-y"
+      - "ai-rulez@latest"
+      - "mcp"
+    transport: stdio
+    enabled: true
+
+  # PostgreSQL database inspector
+  - name: postgres
+    description: PostgreSQL schema inspector for safe database exploration
+    command: uvx
+    args:
+      - "mcp-server-postgres"
+    env:
+      DATABASE_URL: "${DATABASE_URL:-postgresql://localhost/wrapbook_projector_development}"
+    transport: stdio
+    enabled: true
+
+  # Brakeman security scanner for Rails
+  - name: brakeman
+    description: Brakeman static analysis security scanner
+    command: docker
+    args:
+      - "run"
+      - "-i"
+      - "--rm"
+      - "-v"
+      - "${PWD}:/app"
+      - "presidentbeef/brakeman"
+      - "-f"
+      - "json"
+    transport: stdio
+    enabled: true
+
+  # GitHub integration (optional)
+  - name: github
+    description: GitHub integration for repository operations
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-github"
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_TOKEN}"
+    transport: stdio
+    enabled: false

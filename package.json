@@ -1,0 +1,65 @@
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Boilerplate Rails API and Next.js app",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n \"rails,frontend\" -c \"yellow,magenta\" \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "test": "concurrently -n \"backend,frontend\" -c \"yellow,magenta\" \"pnpm --filter backend test\" \"pnpm --filter frontend test\"",
+    "lint": "concurrently -n \"backend,frontend\" -c \"yellow,magenta\" \"pnpm --filter backend lint\" \"pnpm --filter frontend lint\"",
+    "build": "pnpm --filter backend generate:openapi && pnpm --filter frontend generate:api && pnpm --filter frontend build",
+    "generate:api": "pnpm --filter backend generate:openapi && pnpm --filter frontend generate:api",
+    "backend:dev": "pnpm --filter backend dev",
+    "backend:console": "pnpm --filter backend console",
+    "backend:migrate": "pnpm --filter backend migrate",
+    "backend:rollback": "pnpm --filter backend rollback",
+    "backend:seed": "pnpm --filter backend seed",
+    "backend:reset": "pnpm --filter backend reset",
+    "backend:test": "pnpm --filter backend test",
+    "backend:rubocop": "pnpm --filter backend rubocop",
+    "backend:rubocop:autocorrect": "pnpm --filter backend rubocop:autocorrect",
+    "backend:generate:openapi": "pnpm --filter backend generate:openapi",
+    "frontend:dev": "pnpm --filter frontend dev",
+    "frontend:build": "pnpm --filter frontend build",
+    "frontend:start": "pnpm --filter frontend start",
+    "frontend:lint": "pnpm --filter frontend lint",
+    "frontend:typecheck": "pnpm --filter frontend typecheck",
+    "frontend:test": "pnpm --filter frontend test",
+    "frontend:test:ui": "pnpm --filter frontend test:ui",
+    "frontend:test:e2e": "pnpm --filter frontend test:e2e",
+    "frontend:format": "pnpm --filter frontend format",
+    "frontend:generate:api": "pnpm --filter frontend generate:api",
+    "rules:init": "ai-rulez init 'Boilerplate'",
+    "rules:generate": "./scripts/refresh-ai-rules.sh",
+    "rules:watch": "tsx scripts/watch-rules.ts",
+    "strip-timestamps": "node scripts/strip-timestamps.js",
+    "workflows:sync": "./scripts/sync-windsurf-workflows.sh",
+    "opencode:sync": "./scripts/sync-opencode.sh",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "ai-rulez": "^3.11.3",
+    "@types/node": "^22.19.17",
+    "concurrently": "^9.1.2",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "lint-staged": {
+    "*.rb": [
+      "pnpm --filter backend rubocop:autocorrect"
+    ],
+    "public/api-docs/**/*.json": [
+      "pnpm --filter backend validate:openapi"
+    ]
+  }
+}

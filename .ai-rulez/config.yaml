@@ -1,0 +1,73 @@
+# AI-Rulez V3 Configuration
+# Documentation: https://github.com/Goldziher/ai-rulez
+
+$schema: https://raw.githubusercontent.com/Goldziher/ai-rulez/main/schema/ai-rules-v3.schema.json
+
+version: "3.0"
+
+name: "wrapbook-projector"
+
+description: "Rails 7.1 JSON:API with Graphiti resources, Pagy pagination, RSwag documentation, BaseController concerns, and Next.js 16 frontend with Ant Design."
+
+# ============================================================================
+# PRESETS: Which AI tools to generate configs for
+# ============================================================================
+presets:
+  - claude        # CLAUDE.md + .claude/skills/ + .claude/agents/
+  - cursor        # .cursor/rules/*.mdc
+  - windsurf      # .windsurf/*.md
+  - copilot       # .github/copilot-instructions.md
+  - gemini        # .gemini/config.yaml
+  - codex         # AGENTS.md (OpenCode/Codex format)
+  - opencode      # .opencode/rules/
+  - continue-dev
+
+# ============================================================================
+# BUILTINS: Embedded domain expertise (no external includes needed)
+# ============================================================================
+builtins:
+  - ruby                # Ruby/Rails idioms and best practices
+  - security            # OWASP, secrets handling, input validation
+  - testing             # RSpec, TDD, test structure
+  - git-workflow        # Commit conventions, PR hygiene
+  - code-quality        # RuboCop, reek, complexity limits
+  - default-commands    # Standard slash commands (/review, /test, /explain)
+
+# ============================================================================
+# PROFILES: Generate different configs for different teams/contexts
+# ============================================================================
+default: full
+
+profiles:
+  full:
+    - backend
+    - frontend
+    - security
+    - testing
+    - ruby
+    - git-workflow
+  backend:
+    - backend
+    - ruby
+    - code-quality
+  frontend:
+    - frontend
+    - typescript-react
+    - code-quality
+  security:
+    - security
+    - ruby
+  testing:
+    - testing
+    - ruby
+
+# ============================================================================
+# COMPRESSION: Reduce context size for token-constrained tools
+# ============================================================================
+compression:
+  level: moderate
+
+# ============================================================================
+# GITIGNORE: Let ai-rulez manage .gitignore entries for AI tools
+# ============================================================================
+gitignore: true

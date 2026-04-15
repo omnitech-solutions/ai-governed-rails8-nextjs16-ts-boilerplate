@@ -1,0 +1,89 @@
+# frozen_string_literal: true
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'lib/tasks/**/*'
+    - 'bin/bundle'
+    - 'db/schema.rb'
+
+# Ignore RSwag spec files for block length metrics (they're auto-generated)
+# Also ignore service and controller concern specs (comprehensive test coverage)
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/requests/**/*_spec.rb'
+    - 'spec/swagger_helper.rb'
+    - 'spec/services/**/*_spec.rb'
+    - 'spec/controllers/concerns/**/*_spec.rb'
+
+# Ignore method length for concerns (reasonable complexity for their purpose)
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/api/v1/base_controller.rb' # resource_params is complex by design
+    - 'app/controllers/concerns/**/*'
+    - 'app/services/application_orchestrator.rb' # validate method has reasonable complexity
+
+# Ignore ABC size for concerns (reasonable complexity for their purpose)
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/api/v1/base_controller.rb'
+    - 'app/controllers/concerns/**/*'
+    - 'app/services/application_orchestrator.rb' # validate method has reasonable complexity
+
+# Ignore class length for orchestrator (includes default CRUD actions)
+Metrics/ClassLength:
+  Exclude:
+    - 'app/services/application_orchestrator.rb'
+
+# Ignore cyclomatic complexity for concerns
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'app/controllers/concerns/**/*'
+
+# Ignore perceived complexity for concerns and base_controller (complexity justified by nested resource handling)
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'app/controllers/api/v1/base_controller.rb'
+    - 'app/controllers/concerns/**/*'
+
+# Ignore documentation requirements for Rails-generated files and concerns
+Style/Documentation:
+  Exclude:
+    - 'app/controllers/**/*'
+    - 'app/resources/**/*'
+    - 'app/models/**/*'
+    - 'app/mailers/**/*'
+    - 'db/migrate/**/*'
+    - 'config/application.rb'
+
+# Ignore frozen string literal for config files
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'config/initializers/**/*'
+
+# Ignore layout issues in RSwag specs
+Layout/ArgumentAlignment:
+  Exclude:
+    - 'spec/requests/**/*_spec.rb'
+    - 'spec/swagger_helper.rb'
+
+Layout/HashAlignment:
+  Exclude:
+    - 'spec/requests/**/*_spec.rb'
+    - 'spec/swagger_helper.rb'
+
+# Ignore numeric literal underscores in RSwag specs
+Style/NumericLiterals:
+  Exclude:
+    - 'spec/requests/**/*_spec.rb'
+
+# Ignore word array suggestions in swagger_helper (it's a config file)
+Style/WordArray:
+  Exclude:
+    - 'spec/swagger_helper.rb'
+
+# Ignore line length in bin/bundle
+Layout/LineLength:
+  Exclude:
+    - 'bin/bundle'
