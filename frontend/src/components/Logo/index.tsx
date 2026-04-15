@@ -135,7 +135,7 @@ export function Logo({ size = 'md', showText = false }: LogoProps) {
               letterSpacing: '-0.02em',
             }}
           >
-            Wrapbook
+            Boilerplate
           </span>
           <span
             style={{

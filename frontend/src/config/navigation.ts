@@ -1,7 +1,5 @@
 import {
-  ApartmentOutlined,
   HomeOutlined,
-  TeamOutlined,
 } from '@ant-design/icons';
 import type { ComponentType } from 'react';
 
@@ -20,19 +18,5 @@ export const appNavigation: AppNavItem[] = [
     href: '/',
     description: 'Entry point and system summary',
     icon: HomeOutlined,
-  },
-  {
-    key: 'companies',
-    label: 'Companies',
-    href: '/companies',
-    description: 'Manage studios, vendors, and partners',
-    icon: ApartmentOutlined,
-  },
-  {
-    key: 'users',
-    label: 'Users',
-    href: '/users',
-    description: 'Track members and permissions',
-    icon: TeamOutlined,
   },
 ];

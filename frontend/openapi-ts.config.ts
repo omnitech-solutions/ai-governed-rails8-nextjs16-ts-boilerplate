@@ -1,6 +1,4 @@
-import { defineConfig } from '@hey-api/openapi-ts';
-
-export default defineConfig({
+export default {
   input: './openapi.json',
   output: './src/api/generated',
   client: '@hey-api/client-fetch',
@@ -8,4 +6,4 @@ export default defineConfig({
   types: {
     enums: 'javascript',
   },
-});
+};

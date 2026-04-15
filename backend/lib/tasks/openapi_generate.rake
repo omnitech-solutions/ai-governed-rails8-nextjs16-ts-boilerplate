@@ -30,7 +30,7 @@ namespace :openapi do
     spec = {
       'openapi' => '3.0.0',
       'info' => {
-        'title' => 'Wrapbook API',
+        'title' => 'Boilerplate API',
         'version' => '1.0.0',
         'description' => 'API for managing companies, users, projects, and tasks'
       },

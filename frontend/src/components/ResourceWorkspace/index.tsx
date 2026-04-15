@@ -126,7 +126,8 @@ export function ResourceWorkspace<T extends Record<string, any>>({
         {stats.map((stat) => (
           <ProCard key={stat.label} colSpan={{ xs: 24, md: 8 }} className="resource-workspace__stat-card" bordered>
             <Text className="resource-workspace__stat-label">{stat.label}</Text>
-            <Statistic value={stat.value} styles={{ content: { fontSize: 28, fontWeight: 600 } }} />
+            <Statistic value={stat.value} style={{ fontSize: 28, fontWeight: 700 }} />
+
           </ProCard>
         ))}
       </ProCard>

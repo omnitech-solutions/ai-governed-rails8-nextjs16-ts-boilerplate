@@ -11,7 +11,7 @@ RSpec.configure do |config|
     'v1/openapi.json' => {
       openapi: '3.0.0',
       info: {
-        title: 'Wrapbook API',
+        title: 'Boilerplate API',
         version: 'v1',
         description: 'API for managing companies and users'
       },
@@ -48,7 +48,7 @@ RSpec.configure do |config|
             properties: {
               name: { type: :string }
             },
-            required: ['name']
+            required: [ 'name' ]
           },
           UserRequest: {
             type: :object,
@@ -56,7 +56,7 @@ RSpec.configure do |config|
               name: { type: :string },
               email: { type: :string }
             },
-            required: ['name', 'email']
+            required: [ 'name', 'email' ]
           },
           Error: {
             type: :object,

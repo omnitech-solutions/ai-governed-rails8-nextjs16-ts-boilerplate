@@ -137,6 +137,7 @@ export function ResourceFormDialog<T extends Record<string, any>>({
         formData={formData}
         onSubmit={handleSubmit}
         onError={() => message.error('Please fix the validation errors before saving.')}
+        // @ts-ignore - RJSF 5.x/6.x prop compatibility
         errorSchema={errorSchema}
         className="resource-form-modal__form"
         uiSchema={{
