@@ -5,37 +5,6 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # ============================================================================
-# Rails / Ruby
-# ============================================================================
-
-# Ignore bundler config.
-/.bundle
-
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/db/*.sqlite3-*
-
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
-
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
-
-# Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-.irb_history
-
-# Ignore master key for decrypting credentials and more.
-/config/master.key
-
-# ============================================================================
 # Node.js / TypeScript / pnpm
 # ============================================================================
 
@@ -142,57 +111,22 @@ $RECYCLE.BIN/
 # Testing & Coverage
 # ============================================================================
 
-# RSpec
+# RSpec (root level)
 .rspec_status
 spec/examples.txt
 spec/failures.txt
 
-# Coverage
+# Coverage (root level)
 coverage/
 .nyc_output/
 lcov.info
-
-# SimpleCov
-coverage.data
-coverage/
 
 # ============================================================================
 # Misc
 # ============================================================================
 
-# RubyMine / IntelliJ specific (duplicate but safe)
-*.iml
-
-# Spring
-/spring/*.pid
-
-# RubyGems
-*.gem
-
-# RDoc
-.rdoc
-doc/
-
-# YARD
-.yardoc/
-doc/
-
-# pry
-.pry_history
-
-# Guard
-Guardfile.lock
-
-# Local configuration
-config/database.yml
-config/secrets.yml
-config/application.yml
-config/settings.local.yml
-config/settings/*.local.yml
-config/environments/*.local.yml
-
-# Ignore application configuration (but keep the example)
-/config/application.yml
-!/config/application.example.yml
 # AI Rules generated files
 .mcp.json
+
+# Temporary files
+.tmp/

@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import {
-  ArrowRightOutlined,
   BookOutlined,
   CodeOutlined,
   RocketOutlined,
@@ -34,13 +32,8 @@ export default function Home() {
         </p>
 
         <Space wrap size="middle" className="overview-page__actions">
-          <Link href="/dashboard">
-            <Button type="primary" size="large" icon={<ArrowRightOutlined />}>
-              Go to Dashboard
-            </Button>
-          </Link>
           <a href="http://localhost:3000/api-docs" target="_blank" rel="noopener noreferrer">
-            <Button size="large" icon={<BookOutlined />}>
+            <Button type="primary" size="large" icon={<BookOutlined />}>
               API Documentation
             </Button>
           </a>

@@ -25,13 +25,12 @@ export function AppShell({ children }: PropsWithChildren) {
       <ProLayout
         className="app-shell__pro-layout"
         suppressHydrationWarning
-        title="Wrapbook Projector"
+        title="Boilerplate"
         layout="side"
         fixSiderbar
         fixedHeader
         location={{ pathname }}
         siderWidth={288}
-        collapsedWidth={80}
         defaultCollapsed={false}
         onCollapse={setCollapsed}
         token={{
@@ -55,9 +54,6 @@ export function AppShell({ children }: PropsWithChildren) {
             colorTextMenuActive: '#ffffff',
             colorTextMenuSelected: '#ffffff',
             colorTextSubMenuSelected: '#ffffff',
-          },
-          menu: {
-            collapsedWidth: 80,
           },
         }}
         route={{
@@ -107,14 +103,7 @@ export function AppShell({ children }: PropsWithChildren) {
               </div>
               <nav className="app-shell__footer-nav">
                 <div className="app-shell__footer-nav-section">
-                  <Text className="app-shell__footer-nav-title">Platform</Text>
-                  <div className="app-shell__footer-nav-links">
-                    <Link href="/companies">Companies</Link>
-                    <Link href="/users">People</Link>
-                  </div>
-                </div>
-                <div className="app-shell__footer-nav-section">
-                  <Text className="app-shell__footer-nav-title">System</Text>
+s                  <Text className="app-shell__footer-nav-title">System</Text>
                   <div className="app-shell__footer-status">
                     <div className="app-shell__footer-status-item">
                       <span className="app-shell__footer-status-dot app-shell__footer-status-dot--live" />
@@ -130,7 +119,7 @@ export function AppShell({ children }: PropsWithChildren) {
             </div>
             <div className="app-shell__footer-bar">
               <Text className="app-shell__footer-copyright">
-                © 2024 Wrapbook Projector — Local Development Environment
+                © 2024 Boilerplate — Local Development Environment
               </Text>
               <div className="app-shell__footer-meta-pills">
                 <span className="app-shell__footer-pill">Rails 7.1</span>
